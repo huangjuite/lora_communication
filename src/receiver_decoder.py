@@ -10,12 +10,19 @@ class Receiver(object):
     def __init__(self):
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
-        self.ser = serial.Serial("/dev/")
-        # Publications
-        self.pub_motor_cmd = rospy.Publisher("motor_cmd", Motor4Cmd, queue_size=1)
 
-        # Subscriptions
-        self.sub_cmd_drive = rospy.Subscriber("cmd_drive",VelocityVector,self.cbCmd,queue_size=1)
+        #setup serial
+        self.baud_rate = rospy.get_param("baud_rate",115200)
+        self.port_name = rospy.get_param("port_name","/dev/lora_arduino")
+        self.ser = serial.Serial(self.port_name,self.baud_rate)
+
+        # Publications
+        self.pub_Odom = rospy.Publisher("odom", Od ometry, queue_size=1)
+
+        while True:
+            try:
+                cmd_data = self.ser.readline()
+                self.pub_odom.Publish()
 
     def on_shutdown(self):
         
