@@ -6,7 +6,7 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import String
 
 
-class Transmission(object):
+class Sender(object):
     def __init__(self):
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
@@ -23,7 +23,7 @@ class Transmission(object):
 
 
 if __name__ == "__main__":
-    rospy.init_node("lora_transmission",anonymous=False)
-    transmission = Transmission()
+    rospy.init_node("lora_sender",anonymous=False)
+    transmission = Sender()
     rospy.on_shutdown(transmission.on_shutdown)
     rospy.spin()
