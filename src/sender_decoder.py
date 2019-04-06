@@ -19,10 +19,21 @@ class Sender(object):
         # Subscriptions
         self.sub_cmd_drive = rospy.Subscriber("odom",Odometry,self.cb_odom,queue_size=1)
         
-    def cd_odom(self,msg):
+    def cb_odom(self,msg):
+        cmd = self.odom_to_str(msg)        
+        self.ser.write(cmd)
+        
+    def odom_to_str(self,odom):
+        cmd = ""
+        cmd += str(int(odom.pose.pose.position.x*100)) + ","
+        cmd += str(int(odom.pose.pose.position.y*100)) + ","
+        cmd += str(int(odom.pose.pose.position.z*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.x*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.y*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.z*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.w*100))
 
-        try:
-            self.ser.write("")
+        return str
 
     def on_shutdown(self):
         
