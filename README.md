@@ -1,4 +1,5 @@
-# lora_subt
+# lora_communication
+ros package of LoRa communication for SubT
 
 set the usb port of arduino
 
