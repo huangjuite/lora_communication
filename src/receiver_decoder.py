@@ -24,16 +24,17 @@ class Receiver(object):
             cmd_data = self.ser.readline()
             print(len(cmd_data))
             try: 
-                data = struct.unpack("7fss",cmd_data)
+                data = struct.unpack("8fss",cmd_data)
                 print(data)
                 odom = Odometry()
-                odom.pose.pose.position.x = data[0]
-                odom.pose.pose.position.y = data[1]
-                odom.pose.pose.position.z = data[2]
-                odom.pose.pose.orientation.x = data[3]
-                odom.pose.pose.orientation.y = data[4]
-                odom.pose.pose.orientation.z = data[5]
-                odom.pose.pose.orientation.w = data[6]
+                odom.header.stamp = rospy.Time.from_sec(data[0])
+                odom.pose.pose.position.x = data[1]
+                odom.pose.pose.position.y = data[2]
+                odom.pose.pose.position.z = data[3]
+                odom.pose.pose.orientation.x = data[4]
+                odom.pose.pose.orientation.y = data[5]
+                odom.pose.pose.orientation.z = data[6]
+                odom.pose.pose.orientation.w = data[7]
                 self.pub_odom.publish(odom)
             except:
                 print("data currupt")

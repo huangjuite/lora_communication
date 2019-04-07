@@ -25,7 +25,8 @@ class Sender(object):
         self.ser.write(cmd)
         
     def odom_to_str(self,odom):
-        cmd = bytearray(struct.pack("7f",odom.pose.pose.position.x,
+        cmd = bytearray(struct.pack("8f",rospy.get_time(),
+                                        odom.pose.pose.position.x,
                                         odom.pose.pose.position.y,
                                         odom.pose.pose.position.z,
                                         odom.pose.pose.orientation.x,
