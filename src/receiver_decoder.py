@@ -22,7 +22,7 @@ class Receiver(object):
 
         while True:
             cmd_data = self.ser.readline()
-            print(len(cmd_data))
+            #print(len(cmd_data))
             try: 
                 data = struct.unpack("8fss",cmd_data)
                 print(data)
