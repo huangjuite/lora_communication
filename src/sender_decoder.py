@@ -25,16 +25,6 @@ class Sender(object):
         self.ser.write(cmd)
         
     def odom_to_str(self,odom):
-        '''
-        cmd = ""
-        cmd += str(int(odom.pose.pose.position.x*100)) + ","
-        cmd += str(int(odom.pose.pose.position.y*100)) + ","
-        cmd += str(int(odom.pose.pose.position.z*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.x*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.y*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.z*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.w*100))
-        '''
         cmd = bytearray(struct.pack("7f",odom.pose.pose.position.x,
                                         odom.pose.pose.position.y,
                                         odom.pose.pose.position.z,

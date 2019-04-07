@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import serial
 import rospy
+import struct
 import math
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String,Header
@@ -21,26 +22,21 @@ class Receiver(object):
 
         while True:
             cmd_data = self.ser.readline()
-            print(cmd_data)
-
-
-
-            '''
-            data = cmd_data.split(" ")
-            print(data)
-            if len(data)==8:
+            print(len(cmd_data))
+            try: 
+                data = struct.unpack("7fss",cmd_data)
                 print(data)
                 odom = Odometry()
-                odom.pose.pose.position.x = (float(data[0]))/100.
-                odom.pose.pose.position.y = (float(data[1]))/100.
-                odom.pose.pose.position.z = (float(data[2]))/100.
-                odom.pose.pose.orientation.x = (float(data[3]))/100.
-                odom.pose.pose.orientation.y = (float(data[4]))/100.
-                odom.pose.pose.orientation.z = (float(data[5]))/100.
-                odom.pose.pose.orientation.w = (float(data[6]))/100.
-                odom.header = Header()
+                odom.pose.pose.position.x = data[0]
+                odom.pose.pose.position.y = data[1]
+                odom.pose.pose.position.z = data[2]
+                odom.pose.pose.orientation.x = data[3]
+                odom.pose.pose.orientation.y = data[4]
+                odom.pose.pose.orientation.z = data[5]
+                odom.pose.pose.orientation.w = data[6]
                 self.pub_odom.publish(odom)
-                '''
+            except:
+                print("data currupt")
 
     def on_shutdown(self):
         rospy.loginfo("shutting down [%s]" %(self.node_name))
