@@ -23,13 +23,13 @@ class Receiver(object):
             cmd_data = self.ser.readline()
             data = cmd_data.split(",")
             odom = Odometry()
-            odom.pose.pose.position.x = float(data[0])/100.
-            odom.pose.pose.position.y = float(data[1])/100.
-            odom.pose.pose.position.z = float(data[2])/100.
-            odom.pose.pose.orientation.x = float(data[3])/100.
-            odom.pose.pose.orientation.y = float(data[4])/100.
-            odom.pose.pose.orientation.z = float(data[5])/100.
-            odom.pose.pose.orientation.w = float(data[6])/100.
+            odom.pose.pose.position.x = (float(data[0]))/100.
+            odom.pose.pose.position.y = (float(data[1]))/100.
+            odom.pose.pose.position.z = (float(data[2]))/100.
+            odom.pose.pose.orientation.x = (float(data[3]))/100.
+            odom.pose.pose.orientation.y = (float(data[4]))/100.
+            odom.pose.pose.orientation.z = (float(data[5]))/100.
+            odom.pose.pose.orientation.w = (float(data[6]))/100.
             odom.header = Header()
             self.pub_odom.publish(odom)
 
