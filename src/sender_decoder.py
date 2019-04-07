@@ -25,13 +25,13 @@ class Sender(object):
         self.ser.write(cmd)
         
     def odom_to_bytearray(self,odom):
-        ba = bytearray(struct.pack("f",odom.pose.pose.position.x)).append(["\20"])
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.y)).append(["\20"]))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.z)).append(["\20"]))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.x)).append(["\20"]))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.y)).append(["\20"]))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.z)).append(["\20"]))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.w)).append(["\20"]))
+        ba = bytearray(struct.pack("f",odom.pose.pose.position.x)).append(bytes("\20"))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.y)).append(bytes("\20")))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.z)).append(bytes("\20")))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.x)).append(bytes("\20")))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.y)).append(bytes("\20")))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.z)).append(bytes("\20")))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.w)).append(bytes("\20")))
 
         return ba
 
