@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import serial
-import struct
 import rospy
+import struct
 import math
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String
@@ -21,19 +21,30 @@ class Sender(object):
         self.sub_cmd_drive = rospy.Subscriber("odom",Odometry,self.cb_odom,queue_size=1)
         
     def cb_odom(self,msg):
-        cmd = self.odom_to_bytearray(msg)        
+        cmd = self.odom_to_str(msg)        
         self.ser.write(cmd)
         
-    def odom_to_bytearray(self,odom):
-        ba = bytearray(struct.pack("f",odom.pose.pose.position.x)).append(bytes("\20"))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.y)).append(bytes("\20")))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.z)).append(bytes("\20")))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.x)).append(bytes("\20")))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.y)).append(bytes("\20")))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.z)).append(bytes("\20")))
-        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.w)).append(bytes("\20")))
-
-        return ba
+    def odom_to_str(self,odom):
+        '''
+        cmd = ""
+        cmd += str(int(odom.pose.pose.position.x*100)) + ","
+        cmd += str(int(odom.pose.pose.position.y*100)) + ","
+        cmd += str(int(odom.pose.pose.position.z*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.x*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.y*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.z*100)) + ","
+        cmd += str(int(odom.pose.pose.orientation.w*100))
+        '''
+        cmd = bytearray(struct.pack("7f",odom.pose.pose.position.x,
+                                        odom.pose.pose.position.y,
+                                        odom.pose.pose.position.z,
+                                        odom.pose.pose.orientation.x,
+                                        odom.pose.pose.orientation.y,
+                                        odom.pose.pose.orientation.z,
+                                        odom.pose.pose.orientation.w))
+        cmd.append("\r")
+        cmd.append("\n")
+        return cmd
 
     def on_shutdown(self):
         

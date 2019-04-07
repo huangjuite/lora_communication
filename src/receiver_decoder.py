@@ -21,9 +21,13 @@ class Receiver(object):
 
         while True:
             cmd_data = self.ser.readline()
+            print(cmd_data)
+
+
+
+            '''
             data = cmd_data.split(" ")
             print(data)
-            '''
             if len(data)==8:
                 print(data)
                 odom = Odometry()
