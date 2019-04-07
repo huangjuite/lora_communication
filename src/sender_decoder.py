@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import serial
+import struct
 import rospy
 import math
 from nav_msgs.msg import Odometry
