@@ -20,20 +20,19 @@ class Sender(object):
         self.sub_cmd_drive = rospy.Subscriber("odom",Odometry,self.cb_odom,queue_size=1)
         
     def cb_odom(self,msg):
-        cmd = self.odom_to_str(msg)        
+        cmd = self.odom_to_bytearray(msg)        
         self.ser.write(cmd)
         
-    def odom_to_str(self,odom):
-        cmd = ""
-        cmd += str(int(odom.pose.pose.position.x*100)) + ","
-        cmd += str(int(odom.pose.pose.position.y*100)) + ","
-        cmd += str(int(odom.pose.pose.position.z*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.x*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.y*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.z*100)) + ","
-        cmd += str(int(odom.pose.pose.orientation.w*100))
+    def odom_to_bytearray(self,odom):
+        ba = bytearray(struct.pack("f",odom.pose.pose.position.x)).append(["\20"])
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.y)).append(["\20"]))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.position.z)).append(["\20"]))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.x)).append(["\20"]))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.y)).append(["\20"]))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.z)).append(["\20"]))
+        ba.append(bytearray(struct.pack("f",odom.pose.pose.orientation.w)).append(["\20"]))
 
-        return str
+        return ba
 
     def on_shutdown(self):
         
